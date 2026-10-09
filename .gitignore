@@ -1,0 +1,38 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Local configuration
+.env
+.env.*
+!.env.example
+
+# Datasets
+datasets/
+
+# Training outputs and model weights
+outputs/
+*.pth
+*.pt
+*.ckpt
+
+# Logs and temporary files
+*.log
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Frontend dependencies and build files
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+
+# Editor settings
+.vscode/
+.idea/
+algorithms/SAM2-UNet/
+src/*backup*.py
