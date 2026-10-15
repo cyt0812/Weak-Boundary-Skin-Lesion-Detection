@@ -36,3 +36,13 @@ frontend/build/
 .idea/
 algorithms/SAM2-UNet/
 src/*backup*.py
+# Backup files
+*.bak
+*.backup
+*.orig
+
+# Python cache
+*.pyo
+
+# Additional model checkpoints
+*.pth.tar

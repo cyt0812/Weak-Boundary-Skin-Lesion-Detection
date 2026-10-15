@@ -1,0 +1,48 @@
+
+:root {
+  color: #1b2924;
+  background: #f3f6f4;
+  font-family: Inter, "Segoe UI", "Microsoft YaHei", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+body,
+button,
+input {
+  font-family: Inter, "Segoe UI", "Microsoft YaHei", sans-serif;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+#root {
+  min-height: 100vh;
+}
