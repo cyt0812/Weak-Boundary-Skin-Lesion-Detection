@@ -1,0 +1,13 @@
+# Core model dependencies
+torch==2.14.0
+numpy==2.2.6
+Pillow==12.3.0
+
+# Backend API
+fastapi==0.143.1
+uvicorn==0.54.0
+python-multipart==0.0.32
+
+# Training and evaluation
+pandas==2.3.3
+scikit-learn==1.7.2
