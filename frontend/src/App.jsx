@@ -1,15 +1,15 @@
-
 import { useRef, useState } from 'react'
 import './App.css'
 
 const API_URL = 'http://127.0.0.1:8000/api/predict'
+const SEGMENT_API_URL = 'http://127.0.0.1:8000/api/segment'
 const MAX_FILE_SIZE = 10 * 1024 * 1024
 
 const navigation = [
-  { id: 'overview', label: '工作台', number: '01', icon: '⌂' },
-  { id: 'analysis', label: '病灶分析', number: '02', icon: '◎' },
-  { id: 'classification', label: '分类结果', number: '03', icon: '◈' },
-  { id: 'evaluation', label: '模型评估', number: '04', icon: '▥' },
+  { id: 'overview', label: 'Workspace', number: '01', icon: '⌂' },
+  { id: 'analysis', label: 'Lesion Analysis', number: '02', icon: '◎' },
+  { id: 'classification', label: 'Classification', number: '03', icon: '◈' },
+  { id: 'evaluation', label: 'Model Evaluation', number: '04', icon: '▥' },
 ]
 
 function App() {
@@ -18,8 +18,12 @@ function App() {
   const [previewUrl, setPreviewUrl] = useState('')
   const [message, setMessage] = useState('')
   const [dragging, setDragging] = useState(false)
+
   const [analysisResult, setAnalysisResult] = useState(null)
   const [analyzing, setAnalyzing] = useState(false)
+
+  const [segmentationResult, setSegmentationResult] = useState(null)
+  const [segmenting, setSegmenting] = useState(false)
 
   const fileInputRef = useRef(null)
 
@@ -30,12 +34,12 @@ function App() {
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      setMessage('请选择 JPG、PNG 等图片文件。')
+      setMessage('Please select an image file (JPG, PNG, etc.).')
       return
     }
 
     if (file.size > MAX_FILE_SIZE) {
-      setMessage('图片大小不能超过 10 MB，请选择较小的图片。')
+      setMessage('Image size must not exceed 10 MB. Please choose a smaller image.')
       return
     }
 
@@ -45,8 +49,12 @@ function App() {
 
     setSelectedFile(file)
     setPreviewUrl(URL.createObjectURL(file))
+
+    // Clear previous classification and segmentation results when the image changes.
     setAnalysisResult(null)
-    setMessage('图片已载入，可以调用分类模型进行真实推理。')
+    setSegmentationResult(null)
+
+    setMessage('Image loaded. You can now run the classification and segmentation models.')
     setActivePage('analysis')
   }
 
@@ -57,7 +65,7 @@ function App() {
 
   async function handleAnalyze() {
     if (!selectedFile) {
-      setMessage('请先上传一张皮肤镜图片。')
+      setMessage('Please upload a dermoscopic image first.')
       return
     }
 
@@ -65,7 +73,7 @@ function App() {
 
     setAnalyzing(true)
     setAnalysisResult(null)
-    setMessage('正在将图片发送给分类模型，请稍候……')
+    setMessage('Sending the image to the classification model, please wait...')
 
     try {
       const formData = new FormData()
@@ -81,14 +89,14 @@ function App() {
       try {
         data = await response.json()
       } catch {
-        throw new Error('后端返回的内容无法解析，请检查 API 服务。')
+        throw new Error('The backend response could not be parsed. Please check the API service.')
       }
 
       if (!response.ok) {
         throw new Error(
           typeof data.detail === 'string'
             ? data.detail
-            : `请求失败，HTTP 状态码：${response.status}`,
+            : `Request failed, HTTP status: ${response.status}`,
         )
       }
 
@@ -97,11 +105,11 @@ function App() {
         !Array.isArray(data.scores) ||
         data.scores.length !== 7
       ) {
-        throw new Error('后端返回的数据格式不符合预期。')
+        throw new Error('The backend response format is not as expected.')
       }
 
       setAnalysisResult(data)
-      setMessage('分类推理完成。以下结果来自已加载的真实模型。')
+      setMessage('Classification inference complete. The results below come from the loaded model.')
     } catch (error) {
       console.error('Classification request failed:', error)
 
@@ -109,13 +117,76 @@ function App() {
 
       if (error instanceof TypeError) {
         setMessage(
-          '无法连接 Python 后端。请确认 8000 端口的服务仍在运行，然后重试。',
+          'Unable to connect to the Python backend. Make sure the service on port 8000 is running, then try again.',
         )
       } else {
-        setMessage(`分析失败：${error.message}`)
+        setMessage(`Classification failed: ${error.message}`)
       }
     } finally {
       setAnalyzing(false)
+    }
+  }
+
+  async function handleSegment() {
+    if (!selectedFile) {
+      setMessage('Please upload a dermoscopic image first.')
+      return
+    }
+
+    if (segmenting) return
+
+    setSegmenting(true)
+    setSegmentationResult(null)
+    setMessage('Calling the MALUNet segmentation model, please wait...')
+
+    try {
+      const formData = new FormData()
+      formData.append('file', selectedFile)
+
+      const response = await fetch(SEGMENT_API_URL, {
+        method: 'POST',
+        body: formData,
+      })
+
+      let data
+
+      try {
+        data = await response.json()
+      } catch {
+        throw new Error('The backend response could not be parsed. Please check the API service.')
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          typeof data.detail === 'string'
+            ? data.detail
+            : `Request failed, HTTP status: ${response.status}`,
+        )
+      }
+
+      if (
+        typeof data.mask !== 'string' ||
+        typeof data.overlay !== 'string'
+      ) {
+        throw new Error('The backend did not return a valid segmentation mask or overlay image.')
+      }
+
+      setSegmentationResult(data)
+      setMessage('MALUNet segmentation complete. Results are displayed below.')
+    } catch (error) {
+      console.error('Segmentation request failed:', error)
+
+      setSegmentationResult(null)
+
+      if (error instanceof TypeError) {
+        setMessage(
+          'Unable to connect to the Python backend. Make sure the backend service is running, then try again.',
+        )
+      } else {
+        setMessage(`Segmentation failed: ${error.message}`)
+      }
+    } finally {
+      setSegmenting(false)
     }
   }
 
@@ -127,6 +198,7 @@ function App() {
     setPreviewUrl('')
     setSelectedFile(null)
     setAnalysisResult(null)
+    setSegmentationResult(null)
     setMessage('')
     setDragging(false)
 
@@ -182,7 +254,7 @@ function App() {
 
         <div className="nav-caption">WORKSPACE</div>
 
-        <nav className="side-nav" aria-label="主导航">
+        <nav className="side-nav" aria-label="Primary navigation">
           {navigation.map((item) => (
             <button
               key={item.id}
@@ -203,13 +275,13 @@ function App() {
         <div className="sidebar-project">
           <div className="project-status">
             <span className="status-dot" />
-            CLASSIFIER CONNECTED
+            CLASSIFIER + SEGMENTATION
           </div>
 
           <p>Weak Boundary Guided Skin Lesion Detection System</p>
 
           <span className="project-version">
-            Research prototype · v0.2
+            Research prototype · v0.3
           </span>
         </div>
 
@@ -241,7 +313,6 @@ function App() {
             <Overview
               onStart={openAnalysis}
               onNavigate={navigateTo}
-              modelConnected={Boolean(analysisResult)}
             />
           )}
 
@@ -257,6 +328,9 @@ function App() {
               onAnalyze={handleAnalyze}
               analyzing={analyzing}
               analysisResult={analysisResult}
+              onSegment={handleSegment}
+              segmenting={segmenting}
+              segmentationResult={segmentationResult}
               message={message}
               onClear={handleClear}
             />
@@ -301,11 +375,11 @@ function Overview({ onStart, onNavigate }) {
     <>
       <PageHeading
         eyebrow="RESEARCH WORKSPACE / 01"
-        title="病灶分析工作台"
-        description="探索皮肤病灶分割、边界分析与分类方法。"
+        title="Lesion Analysis Workspace"
+        description="Explore skin lesion segmentation, boundary analysis, and classification methods."
         action={
           <button className="button button-primary" onClick={onStart}>
-            <span>＋</span> 新建分析
+            <span>＋</span> New Analysis
           </button>
         }
       />
@@ -318,17 +392,17 @@ function Overview({ onStart, onNavigate }) {
           </div>
 
           <h2>
-            从图像出发，
+            Start from images,
             <br />
-            <span>理解病灶边界。</span>
+            <span>understand lesion boundaries.</span>
           </h2>
 
           <p>
-            一个用于皮肤病灶图像分析的研究原型，逐步整合分割、分类与模型评估流程。
+            A research prototype for skin lesion image analysis, progressively integrating segmentation, classification, and model evaluation workflows.
           </p>
 
           <button className="button button-light" onClick={onStart}>
-            开始图像分析 <span>↗</span>
+            Start Image Analysis <span>↗</span>
           </button>
         </div>
 
@@ -402,8 +476,8 @@ function Overview({ onStart, onNavigate }) {
 
       <div className="section-heading">
         <div>
-          <h2>研究模块</h2>
-          <p>围绕毕设研究目标逐步搭建功能</p>
+          <h2>Research Modules</h2>
+          <p>Features built incrementally around the thesis research goals</p>
         </div>
         <span className="section-note">04 MODULES</span>
       </div>
@@ -412,36 +486,36 @@ function Overview({ onStart, onNavigate }) {
         <ModuleCard
           number="01"
           icon="◎"
-          title="病灶分割"
-          description="展示输入图像、预测掩码与边界叠加结果。"
-          status="待接入模型"
+          title="Lesion Segmentation"
+          description="Uses MALUNet to display predicted masks and boundary overlay results."
+          status="MALUNet segmentation API connected"
           onClick={() => onNavigate('analysis')}
         />
 
         <ModuleCard
           number="02"
           icon="◈"
-          title="特征分类"
-          description="使用已接入的七分类模型输出真实预测分数。"
-          status="分类模型已接入"
+          title="Feature Classification"
+          description="Uses the connected 7-class model to output real prediction scores."
+          status="Classification model connected"
           onClick={() => onNavigate('classification')}
         />
 
         <ModuleCard
           number="03"
           icon="⌘"
-          title="分割引导融合"
-          description="为基础分类与融合分类的对比预留接口。"
-          status="开发规划"
+          title="Segmentation-Guided Fusion"
+          description="Reserves an interface for comparing baseline and fusion classification."
+          status="Planned"
           onClick={() => onNavigate('classification')}
         />
 
         <ModuleCard
           number="04"
           icon="▥"
-          title="实验评估"
-          description="展示真实实验中的 Dice、IoU 与分类指标。"
-          status="待接入评估数据"
+          title="Experiment Evaluation"
+          description="Displays Dice, IoU, and classification metrics from real experiments."
+          status="Evaluation data pending"
           onClick={() => onNavigate('evaluation')}
         />
       </section>
@@ -449,9 +523,9 @@ function Overview({ onStart, onNavigate }) {
       <section className="notice-panel">
         <div className="notice-icon">i</div>
         <div>
-          <strong>当前系统进度</strong>
+          <strong>Current System Progress</strong>
           <p>
-            七分类模型已通过 Python 后端接口接入。病灶分割、边界叠加和分割引导融合尚未接入真实模型。
+            The 7-class model and MALUNet segmentation API are now callable from the frontend. Segmentation-guided fusion and real experiment evaluation data still require further development and validation.
           </p>
         </div>
       </section>
@@ -496,6 +570,9 @@ function Analysis({
   onAnalyze,
   analyzing,
   analysisResult,
+  onSegment,
+  segmenting,
+  segmentationResult,
   message,
   onClear,
 }) {
@@ -503,8 +580,8 @@ function Analysis({
     <>
       <PageHeading
         eyebrow="IMAGE WORKSPACE / 02"
-        title="病灶图像分析"
-        description="上传皮肤镜图像，调用已接入的七分类模型。"
+        title="Lesion Image Analysis"
+        description="Upload a dermoscopic image and run the 7-class model and MALUNet segmentation model separately."
       />
 
       <section className="analysis-layout">
@@ -512,7 +589,7 @@ function Analysis({
           <div className="panel-heading">
             <div>
               <span className="panel-kicker">INPUT IMAGE</span>
-              <h2>输入图像</h2>
+              <h2>Input Image</h2>
             </div>
             <span className="step-label">STEP 01</span>
           </div>
@@ -527,7 +604,7 @@ function Analysis({
 
           {previewUrl ? (
             <div className="image-preview">
-              <img src={previewUrl} alt="已选择的皮肤镜图像预览" />
+              <img src={previewUrl} alt="Preview of the selected dermoscopic image" />
 
               <div className="image-file-info">
                 <span className="file-check">✓</span>
@@ -570,9 +647,11 @@ function Analysis({
                 </svg>
               </span>
 
-              <strong>选择一张皮肤镜图像</strong>
-              <span>点击选择，或将图片拖放到这里</span>
-              <span className="file-format">支持常见图片格式，最大 10 MB</span>
+              <strong>Select a dermoscopic image</strong>
+              <span>Click to browse, or drag and drop an image here</span>
+              <span className="file-format">
+                Common image formats supported, up to 10 MB
+              </span>
             </button>
           )}
 
@@ -582,7 +661,7 @@ function Analysis({
               className="button button-secondary"
               onClick={() => fileInputRef.current?.click()}
             >
-              {previewUrl ? '更换图片' : '选择图片'}
+              {previewUrl ? 'Change Image' : 'Select Image'}
             </button>
 
             {previewUrl && (
@@ -590,9 +669,9 @@ function Analysis({
                 type="button"
                 className="text-button"
                 onClick={onClear}
-                disabled={analyzing}
+                disabled={analyzing || segmenting}
               >
-                移除图片
+                Remove Image
               </button>
             )}
           </div>
@@ -600,7 +679,7 @@ function Analysis({
           <div className="input-guidance">
             <span className="guidance-icon">i</span>
             <p>
-              图片会发送至本机 Python 后端进行分类推理。请使用适合研究的数据图片。
+              Images are sent to the local Python backend for model inference. Please use images appropriate for research.
             </p>
           </div>
         </div>
@@ -609,23 +688,31 @@ function Analysis({
           <div className="panel-heading">
             <div>
               <span className="panel-kicker">MODEL OUTPUT</span>
-              <h2>分析结果</h2>
+              <h2>Analysis Results</h2>
             </div>
 
-            <span className={`pending-pill ${analysisResult ? 'connected' : ''}`}>
+            <span
+              className={`pending-pill ${
+                analysisResult || segmentationResult ? 'connected' : ''
+              }`}
+            >
               <span className="status-dot" />
-              {analysisResult ? '已完成' : analyzing ? '分析中' : '等待分析'}
+              {analyzing || segmenting
+                ? 'Analyzing'
+                : analysisResult || segmentationResult
+                  ? 'Complete'
+                  : 'Awaiting Analysis'}
             </span>
           </div>
 
           <div className={`result-preview ${previewUrl ? 'has-image' : ''}`}>
             {previewUrl ? (
-              <img src={previewUrl} alt="原始输入图像" />
+              <img src={previewUrl} alt="Original input image" />
             ) : (
               <div className="empty-result">
                 <span className="empty-result-icon">◎</span>
-                <strong>等待输入图像</strong>
-                <p>选择左侧图像后，可以在此预览输入内容。</p>
+                <strong>Waiting for Input Image</strong>
+                <p>After selecting an image on the left, you can preview it here.</p>
               </div>
             )}
 
@@ -639,25 +726,28 @@ function Analysis({
                 {analysisResult.predicted_class}
               </div>
               <div className="prediction-score">
-                模型最高分数：{Number(
-                  analysisResult.model_score_percentage,
-                ).toFixed(2)}%
+                Top model score:
+                {Number(analysisResult.model_score_percentage).toFixed(2)}%
               </div>
               <p>
-                权重版本：第 {analysisResult.model_epoch} 轮训练模型
+                Weights: model from training epoch {analysisResult.model_epoch}
               </p>
             </div>
           ) : (
             <div className="result-placeholders">
               <div>
                 <span>01</span>
-                <strong>七分类结果</strong>
-                <small>{analyzing ? '正在推理……' : '等待模型推理'}</small>
+                <strong>7-Class Result</strong>
+                <small>
+                  {analyzing ? 'Running inference...' : 'Awaiting model inference'}
+                </small>
               </div>
               <div>
                 <span>02</span>
-                <strong>分割掩码</strong>
-                <small>待接入分割模型</small>
+                <strong>Segmentation Mask</strong>
+                <small>
+                  {segmenting ? 'Segmenting...' : 'Awaiting MALUNet inference'}
+                </small>
               </div>
             </div>
           )}
@@ -666,14 +756,24 @@ function Analysis({
             type="button"
             className="button button-primary analyze-button"
             onClick={onAnalyze}
-            disabled={analyzing || !file}
+            disabled={analyzing || segmenting || !file}
           >
-            {analyzing ? '正在分析……' : '运行分类模型'}
+            {analyzing ? 'Analyzing...' : 'Run Classification Model'}
             <span>{analyzing ? '…' : '→'}</span>
           </button>
 
+          <button
+            type="button"
+            className="button button-secondary analyze-button"
+            onClick={onSegment}
+            disabled={segmenting || analyzing || !file}
+          >
+            {segmenting ? 'Segmenting...' : 'Run MALUNet Segmentation Model'}
+            <span>{segmenting ? '…' : '→'}</span>
+          </button>
+
           <p className="result-disclaimer">
-            此操作运行真实的七分类模型；分割掩码和边界叠加功能尚未接入。
+            Classification and segmentation are two independent inference processes. Running one model does not automatically run the other.
           </p>
         </div>
       </section>
@@ -689,14 +789,18 @@ function Analysis({
         <ClassificationResult result={analysisResult} />
       )}
 
+      {segmentationResult && (
+        <SegmentationResult result={segmentationResult} />
+      )}
+
       <section className="workflow-strip">
-        <div className="workflow-title">分析流程</div>
+        <div className="workflow-title">Analysis Workflow</div>
 
         <div className="workflow-step active">
           <span>01</span>
           <div>
-            <strong>图像输入</strong>
-            <small>{file ? '已载入' : '等待输入'}</small>
+            <strong>Image Input</strong>
+            <small>{file ? 'Loaded' : 'Awaiting input'}</small>
           </div>
         </div>
 
@@ -705,18 +809,22 @@ function Analysis({
         <div className={`workflow-step ${analysisResult ? 'active' : ''}`}>
           <span>02</span>
           <div>
-            <strong>七分类推理</strong>
-            <small>{analysisResult ? '已完成' : '可运行'}</small>
+            <strong>7-Class Inference</strong>
+            <small>{analysisResult ? 'Complete' : 'Can run independently'}</small>
           </div>
         </div>
 
         <span className="workflow-line" />
 
-        <div className="workflow-step">
+        <div
+          className={`workflow-step ${
+            segmentationResult ? 'active' : ''
+          }`}
+        >
           <span>03</span>
           <div>
-            <strong>病灶分割与融合</strong>
-            <small>待接入</small>
+            <strong>MALUNet Lesion Segmentation</strong>
+            <small>{segmentationResult ? 'Complete' : 'Can run independently'}</small>
           </div>
         </div>
       </section>
@@ -730,7 +838,7 @@ function ClassificationResult({ result }) {
       <div className="panel-heading">
         <div>
           <span className="panel-kicker">REAL MODEL RESPONSE</span>
-          <h2>七分类模型输出</h2>
+          <h2>7-Class Model Output</h2>
         </div>
         <span className="step-label">
           EPOCH {result.model_epoch}
@@ -738,7 +846,7 @@ function ClassificationResult({ result }) {
       </div>
 
       <p className="result-file-name">
-        输入图片：{result.filename}
+        Input image: {result.filename}
       </p>
 
       <div className="score-list">
@@ -752,14 +860,16 @@ function ClassificationResult({ result }) {
               <div
                 className="score-track"
                 role="progressbar"
-                aria-label={`${item.code} 模型分数`}
+                aria-label={`${item.code} model score`}
                 aria-valuemin={0}
                 aria-valuemax={100}
                 aria-valuenow={percentage}
               >
                 <div
                   className={`score-fill ${
-                    item.code === result.predicted_class ? 'score-fill-best' : ''
+                    item.code === result.predicted_class
+                      ? 'score-fill-best'
+                      : ''
                   }`}
                   style={{
                     width: `${Math.min(100, Math.max(0, percentage))}%`,
@@ -776,10 +886,85 @@ function ClassificationResult({ result }) {
       </div>
 
       <div className="research-notice">
-        <strong>科研用途提示</strong>
+        <strong>Research Use Notice</strong>
         <p>{result.notice}</p>
         <p>
-          上述分数为模型 softmax 输出，并非经过临床校准的患病概率，也不能单独用于医疗诊断。
+          The scores above are raw softmax outputs of the model, not clinically calibrated probabilities, and cannot be used alone for medical diagnosis.
+        </p>
+      </div>
+    </section>
+  )
+}
+
+function SegmentationResult({ result }) {
+  return (
+    <section className="panel real-classification-result segmentation-results">
+      <div className="panel-heading">
+        <div>
+          <span className="panel-kicker">MALUNET SEGMENTATION</span>
+          <h2>Lesion Segmentation Results</h2>
+        </div>
+        <span className="pending-pill connected">Segmentation Complete</span>
+      </div>
+
+      <p className="result-file-name">
+        Input image: {result.filename}
+      </p>
+
+      <div className="segmentation-image-grid">
+        <div className="segmentation-image-card">
+          <h3>Predicted Mask</h3>
+          <img
+            src={result.mask}
+            alt="Black-and-white lesion segmentation mask predicted by MALUNet"
+          />
+          <p>
+            White areas indicate the model-predicted lesion region; black areas indicate other regions.
+          </p>
+        </div>
+
+        <div className="segmentation-image-card">
+          <h3>Boundary Overlay</h3>
+          <img
+            src={result.overlay}
+            alt="Red lesion segmentation region and boundary overlaid on the original image"
+          />
+          <p>
+            The red region visualizes the model prediction and does not represent a manually confirmed ground-truth boundary.
+          </p>
+        </div>
+      </div>
+
+      <div className="segmentation-metrics">
+        <div>
+          <span className="metric-label">Predicted Region Ratio</span>
+          <strong>
+            {Number(result.foreground_ratio).toFixed(2)}%
+          </strong>
+        </div>
+
+        <div>
+          <span className="metric-label">Input Size</span>
+          <strong>
+            {Array.isArray(result.input_size)
+              ? result.input_size.join(' × ')
+              : '256 × 256'}
+          </strong>
+        </div>
+
+        <div>
+          <span className="metric-label">Binarization Threshold</span>
+          <strong>
+            {Number(result.threshold).toFixed(2)}
+          </strong>
+        </div>
+      </div>
+
+      <div className="research-notice">
+        <strong>Research Use Notice</strong>
+        <p>
+          {result.notice ||
+            'Segmentation results are for research prototype demonstration only and cannot be used for medical diagnosis.'}
         </p>
       </div>
     </section>
@@ -791,11 +976,11 @@ function Classification({ analysisResult, onStart }) {
     <>
       <PageHeading
         eyebrow="CLASSIFICATION / 03"
-        title="分类与融合结果"
-        description="查看已接入的七分类模型输出，以及后续分割引导分类融合的开发规划。"
+        title="Classification & Fusion Results"
+        description="View the connected 7-class model output and the development plan for segmentation-guided classification fusion."
         action={
           <button className="button button-primary" onClick={onStart}>
-            新建分析 <span>↗</span>
+            New Analysis <span>↗</span>
           </button>
         }
       />
@@ -804,18 +989,18 @@ function Classification({ analysisResult, onStart }) {
         <>
           <section className="panel classification-overview">
             <span className="panel-kicker">LATEST CLASSIFICATION</span>
-            <h2>最近一次模型结果</h2>
+            <h2>Latest Model Result</h2>
 
             <div className="classification-highlight">
               <div>
-                <span className="metric-label">预测类别</span>
+                <span className="metric-label">Predicted Class</span>
                 <strong className="classification-class">
                   {analysisResult.predicted_class}
                 </strong>
               </div>
 
               <div>
-                <span className="metric-label">最高模型分数</span>
+                <span className="metric-label">Top Model Score</span>
                 <strong className="classification-percentage">
                   {Number(
                     analysisResult.model_score_percentage,
@@ -825,11 +1010,11 @@ function Classification({ analysisResult, onStart }) {
             </div>
 
             <p className="result-file-name">
-              图片：{analysisResult.filename}
+              Image: {analysisResult.filename}
             </p>
 
             <p className="result-file-name">
-              模型：第 {analysisResult.model_epoch} 轮训练权重
+              Model: weights from training epoch {analysisResult.model_epoch}
             </p>
           </section>
 
@@ -839,19 +1024,19 @@ function Classification({ analysisResult, onStart }) {
         <section className="panel placeholder-panel">
           <span className="placeholder-symbol">◈</span>
           <span className="panel-kicker">CLASSIFICATION OUTPUT</span>
-          <h2>尚无预测结果</h2>
+          <h2>No Predictions Yet</h2>
           <p>
-            七分类模型后端已经接入。请先在病灶分析页面上传一张图片并运行模型，成功后即可在此查看真实的类别分数。
+            The 7-class model backend is connected. Upload an image on the Lesion Analysis page and run the model; real class scores will appear here once it succeeds.
           </p>
 
           <button className="button button-primary" onClick={onStart}>
-            前往病灶分析 <span>→</span>
+            Go to Lesion Analysis <span>→</span>
           </button>
 
           <div className="planned-list">
-            <div><span>01</span>七分类预测与模型分数</div>
-            <div><span>02</span>后续增加基础分类与融合分类对比</div>
-            <div><span>03</span>后续增加模型版本与推理记录</div>
+            <div><span>01</span>7-class prediction and model scores</div>
+            <div><span>02</span>Add baseline vs. fusion classification comparison later</div>
+            <div><span>03</span>Add model versions and inference records later</div>
           </div>
 
           <span className="large-status">CLASSIFIER API CONNECTED</span>
@@ -860,9 +1045,9 @@ function Classification({ analysisResult, onStart }) {
 
       <section className="panel fusion-notice">
         <span className="panel-kicker">FUTURE DEVELOPMENT</span>
-        <h2>分割引导分类融合</h2>
+        <h2>Segmentation-Guided Classification Fusion</h2>
         <p>
-          当前展示的是独立 RGB 七分类模型的结果，不是分割引导融合结果。融合模块需要在完成分割模型接入和融合方法实现后，再展示真实实验数据。
+          The results currently shown come from the standalone RGB 7-class model, not the segmentation-guided fusion. The fusion module will display real experimental data after the segmentation model integration and the fusion method are implemented.
         </p>
       </section>
     </>
@@ -874,22 +1059,22 @@ function Evaluation() {
     <>
       <PageHeading
         eyebrow="EXPERIMENTS / 04"
-        title="模型评估"
-        description="统一查看分割、分类和融合实验的实际评估结果。"
+        title="Model Evaluation"
+        description="View actual evaluation results for segmentation, classification, and fusion experiments in one place."
       />
 
       <div className="metric-grid">
         {[
-          ['Dice', '分割重叠度'],
-          ['IoU', '交并比'],
-          ['Macro-F1', '分类宏平均 F1'],
-          ['Accuracy', '分类准确率'],
+          ['Dice', 'Segmentation overlap'],
+          ['IoU', 'Intersection over Union'],
+          ['Macro-F1', 'Macro-averaged F1 for classification'],
+          ['Accuracy', 'Classification accuracy'],
         ].map(([name, description]) => (
           <div className="metric-card" key={name}>
             <span className="metric-label">{name}</span>
             <strong>—</strong>
             <span className="metric-description">{description}</span>
-            <span className="metric-pending">尚未载入评估数据</span>
+            <span className="metric-pending">Evaluation data not loaded yet</span>
           </div>
         ))}
       </div>
@@ -898,22 +1083,22 @@ function Evaluation() {
         <div className="panel-heading">
           <div>
             <span className="panel-kicker">EXPERIMENT RECORDS</span>
-            <h2>实验记录</h2>
+            <h2>Experiment Records</h2>
           </div>
-          <span className="pending-pill">暂无数据源</span>
+          <span className="pending-pill">No Data Source</span>
         </div>
 
         <div className="empty-table">
           <span className="empty-result-icon">▥</span>
-          <strong>尚未连接实验数据</strong>
+          <strong>No Experiment Data Connected</strong>
           <p>
-            接入真实评估文件后，这里可以展示实验名称、数据集划分、模型版本和指标。
+            Once real evaluation files are connected, experiment names, dataset splits, model versions, and metrics will be shown here.
           </p>
         </div>
       </section>
 
       <p className="evaluation-note">
-        指标暂时显示为“—”，不会使用虚构数值。后续将根据真实评估脚本输出接入数据。
+        Metrics are temporarily shown as "—"; no fabricated values are used. Data will be connected from real evaluation script outputs later.
       </p>
     </>
   )
