@@ -8,6 +8,10 @@ fastapi==0.143.1
 uvicorn==0.54.0
 python-multipart==0.0.32
 
+# Backend integration tests
+httpx
+pytest
+
 # Training and evaluation
 pandas==2.3.3
 scikit-learn==1.7.2

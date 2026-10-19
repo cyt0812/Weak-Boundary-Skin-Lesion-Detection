@@ -137,7 +137,7 @@ function App() {
 
     setSegmenting(true)
     setSegmentationResult(null)
-    setMessage('Calling the MALUNet segmentation model, please wait...')
+    setMessage('Calling the segmentation API, please wait...')
 
     try {
       const formData = new FormData()
@@ -172,7 +172,7 @@ function App() {
       }
 
       setSegmentationResult(data)
-      setMessage('MALUNet segmentation complete. Results are displayed below.')
+      setMessage('Segmentation API completed. Check the result notice to see whether output is mock or real.')
     } catch (error) {
       console.error('Segmentation request failed:', error)
 
@@ -487,8 +487,8 @@ function Overview({ onStart, onNavigate }) {
           number="01"
           icon="◎"
           title="Lesion Segmentation"
-          description="Uses MALUNet to display predicted masks and boundary overlay results."
-          status="MALUNet segmentation API connected"
+          description="Displays mask and boundary-overlay responses from the segmentation API."
+          status="Segmentation API (mock/real status returned by backend)"
           onClick={() => onNavigate('analysis')}
         />
 
@@ -525,7 +525,7 @@ function Overview({ onStart, onNavigate }) {
         <div>
           <strong>Current System Progress</strong>
           <p>
-            The 7-class model and MALUNet segmentation API are now callable from the frontend. Segmentation-guided fusion and real experiment evaluation data still require further development and validation.
+            The 7-class classifier API is available. The segmentation API supports mock integration testing; a trained segmentation model and real experiment evaluation data still require further development and validation.
           </p>
         </div>
       </section>
@@ -581,7 +581,7 @@ function Analysis({
       <PageHeading
         eyebrow="IMAGE WORKSPACE / 02"
         title="Lesion Image Analysis"
-        description="Upload a dermoscopic image and run the 7-class model and MALUNet segmentation model separately."
+        description="Upload a dermoscopic image and run the 7-class classifier and segmentation API separately."
       />
 
       <section className="analysis-layout">
@@ -746,7 +746,7 @@ function Analysis({
                 <span>02</span>
                 <strong>Segmentation Mask</strong>
                 <small>
-                  {segmenting ? 'Segmenting...' : 'Awaiting MALUNet inference'}
+                  {segmenting ? 'Segmenting...' : 'Awaiting segmentation API response'}
                 </small>
               </div>
             </div>
@@ -768,7 +768,7 @@ function Analysis({
             onClick={onSegment}
             disabled={segmenting || analyzing || !file}
           >
-            {segmenting ? 'Segmenting...' : 'Run MALUNet Segmentation Model'}
+            {segmenting ? 'Segmenting...' : 'Run Segmentation API'}
             <span>{segmenting ? '…' : '→'}</span>
           </button>
 
@@ -823,7 +823,7 @@ function Analysis({
         >
           <span>03</span>
           <div>
-            <strong>MALUNet Lesion Segmentation</strong>
+            <strong>Lesion Segmentation API</strong>
             <small>{segmentationResult ? 'Complete' : 'Can run independently'}</small>
           </div>
         </div>
@@ -916,7 +916,7 @@ function SegmentationResult({ result }) {
           <h3>Predicted Mask</h3>
           <img
             src={result.mask}
-            alt="Black-and-white lesion segmentation mask predicted by MALUNet"
+            alt="Black-and-white mask returned by the segmentation API"
           />
           <p>
             White areas indicate the model-predicted lesion region; black areas indicate other regions.
