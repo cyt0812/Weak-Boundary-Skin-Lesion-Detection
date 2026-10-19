@@ -81,6 +81,25 @@ def test_rejects_invalid_image_bytes():
     assert response.status_code == 400
 
 
+def test_rejects_upload_over_10_mib():
+    with TestClient(main.app) as client:
+        response = client.post(
+            "/api/predict",
+            files={"file": ("large.png", b"x" * (10 * 1024 * 1024 + 1), "image/png")},
+        )
+    assert response.status_code == 413
+
+
+def test_real_mode_segment_is_unavailable_without_model(monkeypatch):
+    monkeypatch.setattr(main, "MOCK_MODE", False)
+    with TestClient(main.app) as client:
+        response = client.post(
+            "/api/segment",
+            files={"file": ("sample.png", png_bytes(), "image/png")},
+        )
+    assert response.status_code == 503
+
+
 def test_evaluation_endpoint_does_not_invent_metrics():
     with TestClient(main.app) as client:
         response = client.get("/api/evaluate")
