@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0 L12 6 L0 12 Z" fill="#6b8294"/></marker>
+    <style>text{font-family:Arial,'Microsoft YaHei',sans-serif} .title{font-size:54px;font-weight:700;fill:#173b58}.sub{font-size:25px;fill:#536e83}.hd{font-size:31px;font-weight:700;fill:#173b58}.body{font-size:26px;fill:#173b58}.small{font-size:21px;fill:#536e83}.white{fill:white}.line{stroke:#6b8294;stroke-width:5;fill:none;marker-end:url(#arrow)} .box{fill:white;stroke:#b9cbd7;stroke-width:3}</style>
+  </defs>
+  <rect width="1600" height="900" fill="#f6f9fb"/>
+  <text x="80" y="85" class="title">Two project classification schemes</text>
+  <text x="80" y="130" class="sub">Same task and data split required for a valid A/B comparison</text>
+  <rect x="80" y="183" rx="28" width="1440" height="270" fill="#edf3f8"/>
+  <rect x="80" y="500" rx="28" width="1440" height="292" fill="#e7f7f4"/>
+  <text x="115" y="234" class="hd">Scheme A · CYT independent baseline</text>
+  <text x="115" y="266" class="small">A different classifier, not the RGB-only MB-DCNN control</text>
+  <rect x="132" y="305" rx="18" width="290" height="103" class="box"/><text x="181" y="365" class="body">RGB lesion image</text>
+  <path d="M422 356 H558" class="line"/>
+  <rect x="560" y="305" rx="18" width="390" height="103" class="box"/><text x="608" y="349" class="body">CYT's feature classifier</text><text x="609" y="380" class="small">model details from teammate</text>
+  <path d="M950 356 H1085" class="line"/>
+  <rect x="1087" y="305" rx="18" width="330" height="103" class="box"/><text x="1145" y="347" class="body">Class probabilities</text><text x="1167" y="380" class="small">MEL / NV / SK</text>
+  <text x="115" y="551" class="hd">Scheme B · Wu Xintong, Mask-guided MB-DCNN</text>
+  <rect x="132" y="606" rx="18" width="255" height="125" class="box"/><text x="176" y="656" class="body">RGB lesion image</text><text x="185" y="691" class="small">classification crops</text>
+  <path d="M387 668 H465" class="line"/>
+  <rect x="467" y="606" rx="18" width="275" height="125" class="box"/><text x="522" y="653" class="body">MALUNet predicts</text><text x="532" y="691" class="small">crop-aligned Mask</text>
+  <path d="M742 668 H815" class="line"/>
+  <rect x="817" y="606" rx="18" width="295" height="125" class="box"/><text x="861" y="653" class="body">RGB + Mask</text><text x="880" y="691" class="small">4-channel input</text>
+  <path d="M1112 668 H1172" class="line"/>
+  <rect x="1174" y="606" rx="18" width="295" height="125" class="box"/><text x="1210" y="653" class="body">Adapted MB-DCNN</text><text x="1236" y="691" class="small">class probabilities</text>
+  <text x="80" y="848" class="small">Status: Scheme B evaluated on ISIC2017; Scheme A needs evaluation on the same ISIC2017 split before comparing A vs B.</text>
+</svg>
+

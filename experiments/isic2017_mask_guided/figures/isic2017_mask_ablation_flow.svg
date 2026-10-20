@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="ISIC2017 no-Mask control versus MALUNet Mask-guided classification flow">
+  <defs>
+    <marker id="arrow" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1 1 L12 7 L1 13" fill="none" stroke="#73879A" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arrow-teal" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1 1 L12 7 L1 13" fill="none" stroke="#0D978F" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <style>
+      text { font-family: "Segoe UI", "Arial", sans-serif; }
+      .title { font-size: 54px; font-weight: 750; fill: #173B57; }
+      .subtitle { font-size: 28px; fill: #52697B; }
+      .lane-title { font-size: 38px; font-weight: 750; }
+      .lane-subtitle { font-size: 25px; fill: #52697B; }
+      .node-title { font-size: 30px; font-weight: 700; fill: #173B57; }
+      .node-sub { font-size: 23px; fill: #52697B; }
+      .output { font-size: 26px; font-weight: 700; fill: #173B57; }
+      .output-sub { font-size: 22px; fill: #52697B; }
+      .foot { font-size: 23px; fill: #52697B; }
+      .line { fill: none; stroke: #73879A; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+      .line-teal { fill: none; stroke: #0D978F; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+      .node { fill: #FFFFFF; stroke: #C6D3DE; stroke-width: 3; }
+      .node-teal { fill: #FFFFFF; stroke: #57BEB6; stroke-width: 3; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1920" height="1080" fill="#F9FBFD"/>
+  <text x="90" y="96" class="title">Mask contribution experiment on ISIC2017</text>
+  <text x="90" y="143" class="subtitle">Two classifiers use the same images, labels, and three-class data split</text>
+
+  <!-- The shared source is repeated visually in the two lanes only to show the fork. -->
+  <rect x="666" y="196" width="588" height="120" rx="25" fill="#173B57"/>
+  <circle cx="730" cy="256" r="30" fill="#FFFFFF" opacity="0.14"/>
+  <circle cx="730" cy="256" r="16" fill="#57D5CD"/>
+  <text x="775" y="252" font-size="36" font-weight="700" fill="#FFFFFF">Same ISIC2017 RGB image</text>
+  <text x="775" y="291" font-size="25" fill="#D6E9F2">Official train, validation, and test split</text>
+
+  <!-- Shared image forks to both experiments. -->
+  <path d="M960 316 V374 H85 V637 H148" class="line" marker-end="url(#arrow)"/>
+  <path d="M960 374 H980 V548 H1006" class="line" marker-end="url(#arrow)"/>
+  <circle cx="960" cy="374" r="7" fill="#73879A"/>
+
+  <!-- Left lane: a controlled RGB-only classifier, not the separate team Scheme A. -->
+  <text x="100" y="468" class="lane-title" fill="#365D7A">No-Mask control</text>
+  <text x="100" y="505" class="lane-subtitle">RGB-only MB-DCNN-based classifier</text>
+
+  <rect x="148" y="563" width="252" height="148" rx="22" class="node"/>
+  <rect x="173" y="592" width="16" height="38" rx="4" fill="#E45B59"/>
+  <rect x="192" y="592" width="16" height="38" rx="4" fill="#59B579"/>
+  <rect x="211" y="592" width="16" height="38" rx="4" fill="#5A8AD7"/>
+  <text x="247" y="607" class="node-title">RGB</text>
+  <text x="247" y="641" class="node-title">image</text>
+  <text x="173" y="688" class="node-sub">3 input channels</text>
+
+  <path d="M400 637 H467" class="line" marker-end="url(#arrow)"/>
+  <rect x="484" y="563" width="277" height="148" rx="22" class="node"/>
+  <text x="515" y="617" font-size="27" font-weight="700" fill="#173B57">MB-DCNN-based</text>
+  <text x="515" y="655" class="node-title">classifier</text>
+  <text x="515" y="688" class="node-sub">3-channel adaptation</text>
+
+  <path d="M761 637 H795" class="line" marker-end="url(#arrow)"/>
+  <rect x="814" y="563" width="118" height="148" rx="22" class="node"/>
+  <text x="830" y="612" class="output">Class</text>
+  <text x="830" y="646" class="output">result</text>
+  <text x="822" y="685" font-size="18" fill="#52697B">MEL/NV/SK</text>
+
+  <!-- Right lane: MALUNet output and the original RGB image meet at fusion. -->
+  <text x="1006" y="416" class="lane-title" fill="#0B837D">Scheme B: Mask-guided</text>
+  <text x="1006" y="453" class="lane-subtitle">MALUNet predicts a Mask for the same RGB image</text>
+
+  <rect x="1006" y="480" width="188" height="137" rx="22" class="node-teal"/>
+  <rect x="1029" y="506" width="12" height="37" rx="3" fill="#E45B59"/>
+  <rect x="1044" y="506" width="12" height="37" rx="3" fill="#59B579"/>
+  <rect x="1059" y="506" width="12" height="37" rx="3" fill="#5A8AD7"/>
+  <text x="1080" y="532" class="node-title">RGB</text>
+  <text x="1032" y="585" class="node-sub">3 channels</text>
+
+  <path d="M1194 548 H1250" class="line-teal" marker-end="url(#arrow-teal)"/>
+  <rect x="1268" y="480" width="205" height="137" rx="22" class="node-teal"/>
+  <text x="1293" y="545" class="node-title">MALUNet</text>
+  <text x="1293" y="583" class="node-sub">Segmentation</text>
+
+  <path d="M1473 548 H1519" class="line-teal" marker-end="url(#arrow-teal)"/>
+  <rect x="1537" y="480" width="277" height="137" rx="22" class="node-teal"/>
+  <rect x="1561" y="501" width="67" height="67" rx="8" fill="#173B57"/>
+  <path d="M1576 535 C1582 515 1610 513 1615 534 C1619 552 1591 562 1578 549 Z" fill="#FFFFFF"/>
+  <text x="1647" y="534" class="node-title">Predicted</text>
+  <text x="1647" y="570" class="node-title">Mask</text>
+
+  <path d="M1100 617 V750" class="line-teal" marker-end="url(#arrow-teal)"/>
+  <text x="1020" y="697" font-size="22" fill="#0B837D">original RGB</text>
+  <path d="M1675 617 V700 H1223 V750" class="line-teal" marker-end="url(#arrow-teal)"/>
+  <text x="1392" y="688" font-size="22" fill="#0B837D">predicted Mask</text>
+
+  <rect x="1006" y="771" width="294" height="149" rx="22" fill="#E8F8F5" stroke="#0D978F" stroke-width="4"/>
+  <text x="1038" y="827" class="node-title">RGB + Mask</text>
+  <text x="1038" y="870" class="node-sub">4 input channels</text>
+
+  <path d="M1300 846 H1361" class="line-teal" marker-end="url(#arrow-teal)"/>
+  <rect x="1379" y="771" width="274" height="149" rx="22" class="node-teal"/>
+  <text x="1404" y="823" class="node-title">MB-DCNN-based</text>
+  <text x="1404" y="862" class="node-title">classifier</text>
+  <text x="1404" y="897" class="node-sub">4-channel adaptation</text>
+
+  <path d="M1653 846 H1690" class="line-teal" marker-end="url(#arrow-teal)"/>
+  <rect x="1709" y="771" width="150" height="149" rx="22" class="node-teal"/>
+  <text x="1724" y="820" class="output">Class</text>
+  <text x="1724" y="855" class="output">result</text>
+  <text x="1720" y="897" class="output-sub">MEL/NV/SK</text>
+
+  <line x1="90" y1="971" x2="1830" y2="971" stroke="#D8E3E9" stroke-width="2"/>
+  <text x="95" y="1016" class="foot">Compare Accuracy, Macro-F1, and melanoma recall on the same ISIC2017 test images.</text>
+  <text x="95" y="1050" class="foot">The RGB-only control is an internal Mask ablation; CYT's separate Scheme A is not shown.</text>
+</svg>
+

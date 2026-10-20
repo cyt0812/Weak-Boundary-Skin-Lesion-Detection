@@ -1,0 +1,68 @@
+{
+  "images": 150,
+  "fixed_mask_checkpoint_step": 400,
+  "predicted_mask": {
+    "images": 150,
+    "accuracy": 0.88,
+    "macro_f1": 0.8556943765160385,
+    "melanoma_recall": 0.6,
+    "confusion_matrix": [
+      [
+        76,
+        1,
+        1
+      ],
+      [
+        12,
+        18,
+        0
+      ],
+      [
+        4,
+        0,
+        38
+      ]
+    ],
+    "auc_per_class": [
+      0.9521011396011396,
+      0.935,
+      0.9909611992945326
+    ]
+  },
+  "oracle_ground_truth_mask": {
+    "images": 150,
+    "accuracy": 0.8933333333333333,
+    "macro_f1": 0.8719607843137256,
+    "melanoma_recall": 0.6333333333333333,
+    "confusion_matrix": [
+      [
+        77,
+        1,
+        0
+      ],
+      [
+        11,
+        19,
+        0
+      ],
+      [
+        4,
+        0,
+        38
+      ]
+    ],
+    "auc_per_class": [
+      0.9606481481481481,
+      0.9322222222222223,
+      0.9880952380952381
+    ]
+  },
+  "prediction_changes": 2,
+  "oracle_only_correct": [
+    "ISIC_0014979",
+    "ISIC_0015401"
+  ],
+  "predicted_only_correct": [],
+  "mean_true_probability_change": 0.004307948226730029,
+  "limitation": "Oracle uses official validation segmentation labels at inference, is not deployable, and was explored on the checkpoint-selection validation split; it is not a strict upper bound or independent test."
+}

@@ -1,0 +1,73 @@
+{
+  "purpose": "OOF training-mask plan only; no training has been run",
+  "folds": 5,
+  "seed": 42,
+  "image_ids": 2000,
+  "classification_crops": 21768,
+  "validation_ids_reserved": 150,
+  "validation_id_overlap": 0,
+  "total_by_class": {
+    "0": 1372,
+    "1": 374,
+    "2": 254
+  },
+  "folds_detail": [
+    {
+      "fold": 0,
+      "segmentation_train_images": 1600,
+      "held_out_images_for_prediction": 400,
+      "held_out_class_counts": {
+        "0": 275,
+        "1": 75,
+        "2": 50
+      },
+      "held_out_classification_crops": 4350
+    },
+    {
+      "fold": 1,
+      "segmentation_train_images": 1600,
+      "held_out_images_for_prediction": 400,
+      "held_out_class_counts": {
+        "0": 275,
+        "1": 74,
+        "2": 51
+      },
+      "held_out_classification_crops": 4350
+    },
+    {
+      "fold": 2,
+      "segmentation_train_images": 1600,
+      "held_out_images_for_prediction": 400,
+      "held_out_class_counts": {
+        "0": 274,
+        "1": 75,
+        "2": 51
+      },
+      "held_out_classification_crops": 4356
+    },
+    {
+      "fold": 3,
+      "segmentation_train_images": 1600,
+      "held_out_images_for_prediction": 400,
+      "held_out_class_counts": {
+        "0": 274,
+        "1": 75,
+        "2": 51
+      },
+      "held_out_classification_crops": 4356
+    },
+    {
+      "fold": 4,
+      "segmentation_train_images": 1600,
+      "held_out_images_for_prediction": 400,
+      "held_out_class_counts": {
+        "0": 274,
+        "1": 75,
+        "2": 51
+      },
+      "held_out_classification_crops": 4356
+    }
+  ],
+  "selection_rule": "Each fold model trains on the other four folds; never use its own held-out fold for checkpoint selection. Existing 150-image official validation may be used for segmentation checkpoint selection, but has already been used in prior classification model selection; all downstream validation comparisons are exploratory.",
+  "limitation": "Image-ID separation only; no lesion-group metadata is present in these local manifests."
+}

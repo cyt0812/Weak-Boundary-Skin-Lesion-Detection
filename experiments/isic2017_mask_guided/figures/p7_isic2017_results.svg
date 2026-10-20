@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <style>text{font-family:Arial,'Microsoft YaHei',sans-serif}.title{font-size:54px;font-weight:700;fill:#173b58}.sub{font-size:23px;fill:#536e83}.section{font-size:31px;font-weight:700;fill:#173b58}.label{font-size:26px;fill:#173b58}.big{font-size:54px;font-weight:700;fill:#008b87}.big2{font-size:54px;font-weight:700;fill:#173b58}.note{font-size:21px;fill:#536e83}</style>
+  <rect width="1600" height="900" fill="#f6f9fb"/>
+  <text x="80" y="85" class="title">ISIC2017 · completed experiments</text>
+  <text x="80" y="130" class="sub">Official 3-class classification split; segmentation and classification metrics are separate tasks</text>
+  <rect x="80" y="180" width="1440" height="236" rx="28" fill="#e7f7f4"/>
+  <text x="118" y="232" class="section">Segmentation · MALUNet</text>
+  <text x="118" y="267" class="sub">2,000 train · 150 validation · best checkpoint at epoch 105 of 300</text>
+  <text x="145" y="344" class="big">84.24%</text><text x="156" y="379" class="label">Validation Dice</text>
+  <text x="705" y="344" class="big">72.76%</text><text x="720" y="379" class="label">Validation IoU</text>
+  <rect x="80" y="447" width="1440" height="330" rx="28" fill="#edf3f8"/>
+  <text x="118" y="499" class="section">Classification · MB-DCNN-based internal Mask ablation</text>
+  <text x="118" y="533" class="sub">Same official 600-image test set · same crop manifests and training settings</text>
+  <text x="476" y="591" class="label">Accuracy</text><text x="905" y="591" class="label">Macro-F1</text>
+  <text x="118" y="650" class="label">RGB only</text><text x="474" y="650" class="big2">79.67%</text><text x="903" y="650" class="big2">72.41%</text>
+  <text x="118" y="724" class="label">RGB + predicted Mask</text><text x="474" y="724" class="big">80.17%</text><text x="903" y="724" class="big">71.53%</text>
+  <text x="80" y="826" class="note">Mask raised Accuracy by 0.50 percentage points but lowered Macro-F1 by 0.87 points; no overall benefit is established.</text>
+  <text x="80" y="856" class="note">Segmentation numbers are validation, not an independent test; CYT's separate Scheme A is not represented here.</text>
+</svg>
+

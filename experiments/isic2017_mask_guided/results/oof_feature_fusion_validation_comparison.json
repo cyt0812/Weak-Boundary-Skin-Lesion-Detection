@@ -1,0 +1,121 @@
+{
+  "images": 150,
+  "arms": {
+    "control": {
+      "best_step": 400,
+      "validation_metrics": {
+        "images": 150,
+        "accuracy": 0.88,
+        "macro_f1": 0.8600458978772232,
+        "melanoma_recall": 0.6333333333333333,
+        "confusion_matrix": [
+          [
+            74,
+            1,
+            3
+          ],
+          [
+            11,
+            19,
+            0
+          ],
+          [
+            3,
+            0,
+            39
+          ]
+        ],
+        "auc_per_class": [
+          0.9469373219373219,
+          0.9466666666666667,
+          0.9944885361552027
+        ]
+      }
+    },
+    "in_sample_mask": {
+      "best_step": 400,
+      "validation_metrics": {
+        "images": 150,
+        "accuracy": 0.88,
+        "macro_f1": 0.8556943765160385,
+        "melanoma_recall": 0.6,
+        "confusion_matrix": [
+          [
+            76,
+            1,
+            1
+          ],
+          [
+            12,
+            18,
+            0
+          ],
+          [
+            4,
+            0,
+            38
+          ]
+        ],
+        "auc_per_class": [
+          0.9521011396011396,
+          0.935,
+          0.9909611992945326
+        ]
+      }
+    },
+    "oof_mask": {
+      "best_step": 400,
+      "validation_metrics": {
+        "images": 150,
+        "accuracy": 0.88,
+        "macro_f1": 0.8556943765160385,
+        "melanoma_recall": 0.6,
+        "confusion_matrix": [
+          [
+            76,
+            1,
+            1
+          ],
+          [
+            12,
+            18,
+            0
+          ],
+          [
+            4,
+            0,
+            38
+          ]
+        ],
+        "auc_per_class": [
+          0.9504985754985755,
+          0.9369444444444444,
+          0.9902998236331569
+        ]
+      }
+    }
+  },
+  "oof_minus_in_sample": {
+    "macro_f1_difference": 0.0,
+    "both_correct": 132,
+    "reference_only_correct": 0,
+    "candidate_only_correct": 0,
+    "both_wrong": 18,
+    "exploratory_paired_bootstrap_95_percentile_interval": [
+      0.0,
+      0.0
+    ]
+  },
+  "oof_minus_control": {
+    "macro_f1_difference": -0.004351521361184663,
+    "both_correct": 129,
+    "reference_only_correct": 3,
+    "candidate_only_correct": 3,
+    "both_wrong": 15,
+    "exploratory_paired_bootstrap_95_percentile_interval": [
+      -0.04703059545682715,
+      0.035793836006879305
+    ]
+  },
+  "warning": "Exploratory comparison on the same 150-image validation set used for checkpoint selection and earlier analyses; no official test inference. Original and OOF mask heads each trained once with seed 42 and the same settings, but only the training mask source differs."
+}

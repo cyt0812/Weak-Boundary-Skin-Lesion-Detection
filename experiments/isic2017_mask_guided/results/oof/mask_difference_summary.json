@@ -1,0 +1,11 @@
+{
+  "images": 2000,
+  "images_with_any_changed_mask_pixel": 2000,
+  "mean_pixel_disagreement_fraction": 0.02285641541772959,
+  "median_pixel_disagreement_fraction": 0.010393415178571428,
+  "by_class_mean_pixel_disagreement_fraction": {
+    "0": 0.018234618806524064,
+    "1": 0.030507053673742224,
+    "2": 0.03655628251546682
+  }
+}

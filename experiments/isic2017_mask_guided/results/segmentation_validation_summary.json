@@ -1,0 +1,15 @@
+{
+  "model": "MALUNet",
+  "task": "ISIC2017 official segmentation",
+  "training_images": 2000,
+  "validation_images": 150,
+  "training_epochs": 300,
+  "best_epoch_by_validation_loss": 105,
+  "best_validation_loss": 0.3220,
+  "validation_dice": 0.8423538300010348,
+  "validation_iou": 0.7276436028823796,
+  "validation_pixel_accuracy": 0.9459150187174479,
+  "independent_test_evaluated": false,
+  "note": "The final 'test of best model' line in the original training script reuses the 150-image validation loader."
+}
+

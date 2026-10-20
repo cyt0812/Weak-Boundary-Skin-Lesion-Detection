@@ -1,0 +1,65 @@
+{
+  "images": 600,
+  "accuracy": 0.7966666666666666,
+  "macro_f1": 0.7240567027905804,
+  "auc_per_class": [
+    0.8970326117687553,
+    0.8696536957406522,
+    0.947276688453159
+  ],
+  "selection_auc_mean_melanoma_sk": 0.9084651920969056,
+  "confusion_matrix": [
+    [
+      343,
+      20,
+      30
+    ],
+    [
+      39,
+      60,
+      18
+    ],
+    [
+      10,
+      5,
+      75
+    ]
+  ],
+  "classification_report": {
+    "nevus": {
+      "precision": 0.875,
+      "recall": 0.8727735368956743,
+      "f1-score": 0.8738853503184714,
+      "support": 393.0
+    },
+    "melanoma": {
+      "precision": 0.7058823529411765,
+      "recall": 0.5128205128205128,
+      "f1-score": 0.594059405940594,
+      "support": 117.0
+    },
+    "seborrheic_keratosis": {
+      "precision": 0.6097560975609756,
+      "recall": 0.8333333333333334,
+      "f1-score": 0.704225352112676,
+      "support": 90.0
+    },
+    "accuracy": 0.7966666666666666,
+    "macro avg": {
+      "precision": 0.7302128168340508,
+      "recall": 0.7396424610165068,
+      "f1-score": 0.7240567027905804,
+      "support": 600.0
+    },
+    "weighted avg": {
+      "precision": 0.8022354734576758,
+      "recall": 0.7966666666666666,
+      "f1-score": 0.793870291433916,
+      "support": 600.0
+    }
+  },
+  "mode": "rgb",
+  "steps": 50001,
+  "split": "official ISIC2017 2000/150/600",
+  "mask_source": "none"
+}

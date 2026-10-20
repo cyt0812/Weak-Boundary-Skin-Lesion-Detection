@@ -1,0 +1,35 @@
+{
+  "crop_weighted": {
+    "count": 21768,
+    "oof_mean_dice": 0.8118469913423293,
+    "in_sample_mean_dice": 0.8125632520045751,
+    "mean_oof_minus_in_sample_dice": -0.0007162606622458227
+  },
+  "image_weighted": {
+    "count": 2000,
+    "oof_mean_dice": 0.8163905443775251,
+    "in_sample_mean_dice": 0.8177240342584471,
+    "mean_oof_minus_in_sample_dice": -0.0013334898809220213
+  },
+  "by_class_image_weighted": {
+    "0": {
+      "count": 1372,
+      "oof_mean_dice": 0.8284051292256958,
+      "in_sample_mean_dice": 0.8313707675070239,
+      "mean_oof_minus_in_sample_dice": -0.002965638281328177
+    },
+    "1": {
+      "count": 374,
+      "oof_mean_dice": 0.8114132748349647,
+      "in_sample_mean_dice": 0.8041174171079067,
+      "mean_oof_minus_in_sample_dice": 0.007295857727058078
+    },
+    "2": {
+      "count": 254,
+      "oof_mean_dice": 0.7588216010595222,
+      "in_sample_mean_dice": 0.7640451240114178,
+      "mean_oof_minus_in_sample_dice": -0.0052235229518956825
+    }
+  },
+  "note": "Train has 9 crops per nevus image and 15 for each melanoma/SK image; validation has 9 per image. Compare OOF and in-sample on paired train crops, not raw aggregate train-vs-val crop means as if the crop distributions were identical."
+}

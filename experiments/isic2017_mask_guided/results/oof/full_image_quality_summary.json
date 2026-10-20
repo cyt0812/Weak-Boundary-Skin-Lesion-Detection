@@ -1,0 +1,61 @@
+{
+  "overall": {
+    "images": 2000,
+    "oof_mean_dice": 0.8909928414129229,
+    "in_sample_mean_dice": 0.8978545766719751,
+    "mean_oof_minus_in_sample_dice": -0.006861735259052203
+  },
+  "by_class": {
+    "0": {
+      "images": 1372,
+      "oof_mean_dice": 0.9018217875866505,
+      "in_sample_mean_dice": 0.9069960810788034,
+      "mean_oof_minus_in_sample_dice": -0.005174293492152832
+    },
+    "1": {
+      "images": 374,
+      "oof_mean_dice": 0.8906430241393638,
+      "in_sample_mean_dice": 0.897860238543328,
+      "mean_oof_minus_in_sample_dice": -0.007217214403964106
+    },
+    "2": {
+      "images": 254,
+      "oof_mean_dice": 0.8330145638930672,
+      "in_sample_mean_dice": 0.8484677200339653,
+      "mean_oof_minus_in_sample_dice": -0.015453156140898209
+    }
+  },
+  "by_held_out_fold": {
+    "0": {
+      "images": 400,
+      "oof_mean_dice": 0.8922907212041373,
+      "in_sample_mean_dice": 0.8985031464089904,
+      "mean_oof_minus_in_sample_dice": -0.006212425204853244
+    },
+    "1": {
+      "images": 400,
+      "oof_mean_dice": 0.8926573207346054,
+      "in_sample_mean_dice": 0.899037698053117,
+      "mean_oof_minus_in_sample_dice": -0.006380377318511518
+    },
+    "2": {
+      "images": 400,
+      "oof_mean_dice": 0.8893685562666271,
+      "in_sample_mean_dice": 0.8980952113763451,
+      "mean_oof_minus_in_sample_dice": -0.008726655109717785
+    },
+    "3": {
+      "images": 400,
+      "oof_mean_dice": 0.8990971310721187,
+      "in_sample_mean_dice": 0.899975175604777,
+      "mean_oof_minus_in_sample_dice": -0.0008780445326583325
+    },
+    "4": {
+      "images": 400,
+      "oof_mean_dice": 0.8815504777871257,
+      "in_sample_mean_dice": 0.893661651916646,
+      "mean_oof_minus_in_sample_dice": -0.012111174129520137
+    }
+  },
+  "interpretation_limit": "OOF models train on 1600 instead of 2000 segmentation images. A Dice difference cannot be attributed solely to whether each image was seen during training."
+}
