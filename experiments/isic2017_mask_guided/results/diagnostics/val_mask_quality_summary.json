@@ -1,0 +1,34 @@
+{
+  "overall": {
+    "images": 150,
+    "mean_dice": 0.847894487329497,
+    "median_dice": 0.9125897854673979,
+    "mean_iou": 0.7640114580569798,
+    "mean_predicted_coverage": 0.1708920599489796,
+    "mean_ground_truth_coverage": 0.1739757387329932
+  },
+  "nevus": {
+    "images": 78,
+    "mean_dice": 0.8680190936302805,
+    "median_dice": 0.9241928120508733,
+    "mean_iou": 0.7928597020142805,
+    "mean_predicted_coverage": 0.1396558473148875,
+    "mean_ground_truth_coverage": 0.12698301977040818
+  },
+  "melanoma": {
+    "images": 30,
+    "mean_dice": 0.8799775663503887,
+    "median_dice": 0.915910906040126,
+    "mean_iou": 0.802761749289442,
+    "mean_predicted_coverage": 0.24597749255952378,
+    "mean_ground_truth_coverage": 0.27862590348639454
+  },
+  "seborrheic_keratosis": {
+    "images": 42,
+    "mean_dice": 0.7876037334702618,
+    "median_dice": 0.8452998677268773,
+    "mean_iou": 0.6827573683988054,
+    "mean_predicted_coverage": 0.1752697172619048,
+    "mean_ground_truth_coverage": 0.1864978134110787
+  }
+}

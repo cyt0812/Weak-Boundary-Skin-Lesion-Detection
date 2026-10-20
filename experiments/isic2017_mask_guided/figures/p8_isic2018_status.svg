@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <style>text{font-family:Arial,'Microsoft YaHei',sans-serif}.title{font-size:54px;font-weight:700;fill:#173b58}.sub{font-size:24px;fill:#536e83}.section{font-size:31px;font-weight:700;fill:#173b58}.label{font-size:26px;fill:#173b58}.big{font-size:58px;font-weight:700;fill:#008b87}.planned{font-size:42px;font-weight:700;fill:#b36638}.note{font-size:21px;fill:#536e83}</style>
+  <rect width="1600" height="900" fill="#f6f9fb"/>
+  <text x="80" y="85" class="title">ISIC2018 · completed vs planned</text>
+  <text x="80" y="130" class="sub">Do not mix segmentation validation with seven-class classification performance</text>
+  <rect x="80" y="187" width="1440" height="284" rx="28" fill="#e7f7f4"/>
+  <text x="120" y="244" class="section">Segmentation · MALUNet completed</text>
+  <text x="120" y="286" class="sub">300-epoch training; best checkpoint loss 0.3097, evaluated on validation loader</text>
+  <text x="160" y="385" class="big">88.06%</text><text x="173" y="426" class="label">Validation Dice</text>
+  <text x="775" y="385" class="big">78.66%</text><text x="789" y="426" class="label">Validation IoU</text>
+  <rect x="80" y="505" width="1440" height="287" rx="28" fill="#fff4e9"/>
+  <text x="120" y="565" class="section">Seven-class classification · not yet verified here</text>
+  <text x="160" y="651" class="planned">Accuracy: Planned</text>
+  <text x="760" y="651" class="planned">Macro-F1: Planned</text>
+  <text x="120" y="735" class="sub">First finish unified ISIC2017 three-class A/B evaluation, then consider ISIC2018 adaptation.</text>
+  <text x="80" y="849" class="note">The training log calls its final line “test of best model”, but the code passes the validation loader; it is not an independent test.</text>
+</svg>
+

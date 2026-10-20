@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs><marker id="a" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0 L12 6 L0 12 Z" fill="#6b8294"/></marker><style>text{font-family:Arial,'Microsoft YaHei',sans-serif} .title{font-size:54px;font-weight:700;fill:#173b58}.body{font-size:30px;fill:#173b58}.sub{font-size:24px;fill:#536e83}.line{stroke:#6b8294;stroke-width:5;fill:none;marker-end:url(#a)}</style></defs>
+  <rect width="1600" height="900" fill="#f6f9fb"/>
+  <text x="80" y="90" class="title">How RGB and predicted Mask are combined</text>
+  <text x="80" y="135" class="sub">Implemented four-channel input for the ISIC2017 Mask ablation</text>
+  <rect x="75" y="210" width="710" height="450" rx="28" fill="#edf3f8"/>
+  <text x="120" y="260" class="body">Aligned classification crop</text>
+  <rect x="195" y="335" width="300" height="240" rx="15" fill="#ec6464"/><text x="317" y="468" class="body" fill="white">R</text>
+  <rect x="220" y="315" width="300" height="240" rx="15" fill="#5db88e"/><text x="342" y="448" class="body" fill="white">G</text>
+  <rect x="245" y="295" width="300" height="240" rx="15" fill="#5e8fda"/><text x="367" y="428" class="body" fill="white">B</text>
+  <text x="247" y="610" class="sub">3 RGB channels · 224 × 224 crop</text>
+  <text x="678" y="450" style="font:700 64px Arial;fill:#728da0">+</text>
+  <rect x="825" y="210" width="700" height="450" rx="28" fill="#e7f7f4"/>
+  <text x="870" y="260" class="body">MALUNet prediction on that crop</text>
+  <rect x="1015" y="295" width="300" height="240" rx="15" fill="#173b58"/><path d="M1115 340 C1190 315 1260 355 1265 420 C1260 490 1190 510 1120 480 C1070 458 1060 385 1115 340 Z" fill="white"/>
+  <text x="1020" y="610" class="sub">1 binary Mask channel · 224 × 224</text>
+  <path d="M440 665 V716 H718" class="line"/><path d="M1160 665 V716 H882" class="line"/>
+  <rect x="613" y="713" width="375" height="96" rx="24" fill="#d6eeeb" stroke="#00968e" stroke-width="4"/>
+  <text x="660" y="756" class="body">[R, G, B, Mask]</text>
+  <text x="680" y="789" class="sub">4 × 224 × 224</text>
+  <text x="80" y="865" class="sub">The four-channel tensor is fed to an adapted MB-DCNN; it is not a visual overlay or ground-truth Mask.</text>
+</svg>
+

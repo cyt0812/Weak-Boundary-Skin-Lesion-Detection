@@ -1,0 +1,97 @@
+{
+  "overall": {
+    "crops": 1350,
+    "mean_dice": 0.7872247033109807,
+    "median_dice": 0.8843921132658821,
+    "mean_predicted_coverage": 0.3326174384684429,
+    "mean_ground_truth_coverage": 0.45659847706443685
+  },
+  "by_crop": {
+    "0": {
+      "crops": 150,
+      "mean_dice": 0.8474759608266687,
+      "median_dice": 0.9125901610768521,
+      "mean_predicted_coverage": 0.1708920599489796,
+      "mean_ground_truth_coverage": 0.1735876381802721
+    },
+    "1": {
+      "crops": 150,
+      "mean_dice": 0.8440971512730825,
+      "median_dice": 0.9095531990788515,
+      "mean_predicted_coverage": 0.2186959236819728,
+      "mean_ground_truth_coverage": 0.2431733630952381
+    },
+    "2": {
+      "crops": 150,
+      "mean_dice": 0.829738948009635,
+      "median_dice": 0.9054596679041553,
+      "mean_predicted_coverage": 0.27869539221938777,
+      "mean_ground_truth_coverage": 0.34648982249149657
+    },
+    "3": {
+      "crops": 150,
+      "mean_dice": 0.7982255652389364,
+      "median_dice": 0.8811217141607312,
+      "mean_predicted_coverage": 0.3720462638180272,
+      "mean_ground_truth_coverage": 0.5047907366071429
+    },
+    "4": {
+      "crops": 150,
+      "mean_dice": 0.699047731695248,
+      "median_dice": 0.8047456178631335,
+      "mean_predicted_coverage": 0.4721553465136054,
+      "mean_ground_truth_coverage": 0.7297799744897959
+    },
+    "5": {
+      "crops": 150,
+      "mean_dice": 0.8373971500525146,
+      "median_dice": 0.9002162473497073,
+      "mean_predicted_coverage": 0.2560213382227891,
+      "mean_ground_truth_coverage": 0.31532618516156463
+    },
+    "6": {
+      "crops": 150,
+      "mean_dice": 0.8124681300496058,
+      "median_dice": 0.8957466817963846,
+      "mean_predicted_coverage": 0.3320871864370748,
+      "mean_ground_truth_coverage": 0.427444462159864
+    },
+    "7": {
+      "crops": 150,
+      "mean_dice": 0.7653103896251756,
+      "median_dice": 0.8635529648353067,
+      "mean_predicted_coverage": 0.42210233312074835,
+      "mean_ground_truth_coverage": 0.5851215720663265
+    },
+    "8": {
+      "crops": 150,
+      "mean_dice": 0.6512613030279598,
+      "median_dice": 0.7400388427942133,
+      "mean_predicted_coverage": 0.4708611022534014,
+      "mean_ground_truth_coverage": 0.7836725393282312
+    }
+  },
+  "by_class": {
+    "nevus": {
+      "crops": 702,
+      "mean_dice": 0.8261683316975612,
+      "median_dice": 0.9102663999942499,
+      "mean_predicted_coverage": 0.3021478356299785,
+      "mean_ground_truth_coverage": 0.3616402173182307
+    },
+    "melanoma": {
+      "crops": 270,
+      "mean_dice": 0.7726844472039982,
+      "median_dice": 0.8801786538806945,
+      "mean_predicted_coverage": 0.40253441220238095,
+      "mean_ground_truth_coverage": 0.6296557598733938
+    },
+    "seborrheic_keratosis": {
+      "crops": 378,
+      "mean_dice": 0.7252867192408903,
+      "median_dice": 0.8095722739476681,
+      "mean_predicted_coverage": 0.33926314821563547,
+      "mean_ground_truth_coverage": 0.5093371860152791
+    }
+  }
+}

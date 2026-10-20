@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs><marker id="a" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0 L12 6 L0 12 Z" fill="#6b8294"/></marker><style>text{font-family:Arial,'Microsoft YaHei',sans-serif}.title{font-size:54px;font-weight:700;fill:#173b58}.section{font-size:33px;font-weight:700;fill:#173b58}.sub{font-size:24px;fill:#536e83}.small{font-size:21px;fill:#536e83}.line{stroke:#6b8294;stroke-width:6;fill:none;marker-end:url(#a)}</style></defs>
+  <rect width="1600" height="900" fill="#f6f9fb"/>
+  <text x="80" y="90" class="title">Weak-boundary optimisation · research plan</text>
+  <text x="80" y="138" class="sub">Proposed next stage; no unrun optimisation is presented as a completed result</text>
+  <rect x="80" y="300" width="385" height="350" rx="28" fill="#edf3f8" stroke="#b9cbd7" stroke-width="3"/>
+  <text x="127" y="380" class="section">Original MALUNet</text>
+  <text x="127" y="435" class="sub">Current segmentation baseline</text>
+  <text x="127" y="477" class="sub">Predicted lesion Mask</text>
+  <text x="127" y="558" class="small">Status: trained and evaluated</text>
+  <path d="M465 476 H565" class="line"/>
+  <rect x="570" y="300" width="470" height="350" rx="28" fill="#fff4e9" stroke="#e2af85" stroke-width="3"/>
+  <text x="615" y="380" class="section">Boundary-aware design</text>
+  <text x="615" y="436" class="sub">Focus on low-contrast edges</text>
+  <text x="615" y="478" class="sub">Candidate: boundary loss / features</text>
+  <text x="615" y="558" class="small">Status: planned, method to be chosen</text>
+  <path d="M1040 476 H1135" class="line"/>
+  <rect x="1140" y="300" width="380" height="350" rx="28" fill="#e7f7f4" stroke="#73c7c0" stroke-width="3"/>
+  <text x="1185" y="380" class="section">Evaluation</text>
+  <text x="1185" y="435" class="sub">Same images and splits</text>
+  <text x="1185" y="477" class="sub">Dice / IoU / boundary quality</text>
+  <text x="1185" y="558" class="small">Compare cost and accuracy</text>
+  <text x="80" y="786" class="sub">Pair this plan with the real weak-boundary case on P5; do not claim the boundary-aware method is already trained.</text>
+</svg>
+

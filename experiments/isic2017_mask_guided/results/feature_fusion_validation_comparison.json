@@ -1,0 +1,21 @@
+{
+  "images": 150,
+  "control_best_step": 400,
+  "mask_best_step": 400,
+  "control_macro_f1": 0.8600458978772232,
+  "mask_macro_f1": 0.8556943765160385,
+  "observed_mask_minus_control_macro_f1": -0.004351521361184663,
+  "both_correct": 129,
+  "control_only_correct": 3,
+  "mask_only_correct": 3,
+  "both_wrong": 15,
+  "bootstrap": {
+    "method": "3000 paired, class-stratified resamples of the same validation IDs",
+    "difference_95_percentile_interval": [
+      -0.04498094282905788,
+      0.033619534418631705
+    ],
+    "fraction_mask_greater_than_control": 0.405,
+    "warning": "Exploratory only: both best checkpoints were selected on this validation set."
+  }
+}
